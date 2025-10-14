@@ -166,3 +166,6 @@
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Newtonsoft.Json.dll
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/obj/Debug/net9.0/viesbuciu_rezervacija_backend.sourcelink.json
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/DotNetEnv.dll
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Sprache.dll
