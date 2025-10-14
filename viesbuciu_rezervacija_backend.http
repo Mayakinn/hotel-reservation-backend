@@ -1,0 +1,6 @@
+@viesbuciu_rezervacija_backend_HostAddress = http://localhost:5070
+
+GET {{viesbuciu_rezervacija_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
