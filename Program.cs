@@ -74,11 +74,11 @@ using (var scope = app.Services.CreateScope())
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapScalarApiReference();
-    app.MapOpenApi();
-}
+//if (app.Environment.IsDevelopment())
+//{
+app.MapScalarApiReference();
+app.MapOpenApi();
+//}
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseHttpsRedirection();
