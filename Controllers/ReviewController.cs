@@ -3,6 +3,8 @@ using viesbuciu_rezervacija_backend.Interfaces;
 using viesbuciu_rezervacija_backend.Mappers;
 using viesbuciu_rezervacija_backend.Models;
 using viesbuciu_rezervacija_backend.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace viesbuciu_rezervacija_backend.Controllers
 {
@@ -48,8 +50,8 @@ namespace viesbuciu_rezervacija_backend.Controllers
 
             return Ok(review.ToReviewDto());
         }
-
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> CreateReview(
             int hotelId,
             int roomId,
@@ -62,7 +64,18 @@ namespace viesbuciu_rezervacija_backend.Controllers
             if (room == null || room.HotelId != hotelId)
                 return NotFound("Room not found in this hotel");
 
-            var reviewModel = reviewDto.ToReviewFromCreate(roomId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var username = User.Identity?.Name ?? "Anonymous";
+
+            var reviewModel = new Review
+            {
+                RoomId = roomId,
+                Comment = reviewDto.Comment,
+                Rating = reviewDto.Rating,
+                UserId = userId!,
+                ReviewerName = username
+            };
+
             await _reviewRepo.CreateAsync(reviewModel);
 
             return CreatedAtAction(nameof(GetReviewById),
@@ -70,40 +83,37 @@ namespace viesbuciu_rezervacija_backend.Controllers
                 reviewModel.ToReviewDto());
         }
 
+
         [HttpDelete("{reviewId}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteReview(int hotelId, int roomId, int reviewId)
         {
             var review = await _reviewRepo.GetByIdAsync(reviewId);
-            if (review == null || review.RoomId != roomId)
-                return NotFound();
+            if (review == null)
+                return NotFound("Review not found");
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (review.UserId != userId)
+                return StatusCode(StatusCodes.Status403Forbidden, "You can only delete your own reviews.");
             await _reviewRepo.DeleteAsync(review);
             return NoContent();
         }
 
         [HttpPut("{reviewId}")]
-        public async Task<IActionResult> UpdateReview(
-    int hotelId,
-    int roomId,
-    int reviewId,
-    [FromBody] UpdateReviewRequestDto dto)
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateReview(int hotelId, int roomId, int reviewId, [FromBody] UpdateReviewRequestDto dto)
         {
-            if (!await _hotelRepo.HotelExists(hotelId))
-                return NotFound("Hotel not found");
-
-            var room = await _roomRepo.GetByIdAsync(roomId, true);
-            if (room == null || room.HotelId != hotelId)
-                return NotFound("Room not found in this hotel");
-
-            var review = room.Reviews.FirstOrDefault(r => r.Id == reviewId);
+            var review = await _reviewRepo.GetByIdAsync(reviewId);
             if (review == null)
-                return NotFound("Review not found in this room");
+                return NotFound("Review not found");
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (review.UserId != userId)
+                return StatusCode(StatusCodes.Status403Forbidden, "You can only update your own reviews.");
             review.Comment = dto.Comment;
             review.Rating = dto.Rating;
 
             var updatedReview = await _reviewRepo.UpdateAsync(review);
-
             return Ok(updatedReview.ToReviewDto());
         }
     }

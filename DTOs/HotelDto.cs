@@ -16,7 +16,7 @@ namespace viesbuciu_rezervacija_backend.DTOs
         public HotelType Type { get; set; }
         public List<RoomDto> Rooms { get; set; } = new();
         public DateTime CreatedAt { get; set; }
-
+        public string? OwnerId { get; set; }
     }
 
 
