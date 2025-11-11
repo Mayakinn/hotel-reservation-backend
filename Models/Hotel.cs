@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace viesbuciu_rezervacija_backend.Models
 {
     public class Hotel : BaseEntity
@@ -14,7 +16,9 @@ namespace viesbuciu_rezervacija_backend.Models
         public bool Breakfast { get; set; }
 
         public HotelType Type { get; set; }
-
+        [JsonIgnore]
+        public ApplicationUser? Owner { get; set; }
+        public string? OwnerId { get; set; }
         public List<Room> Rooms { get; set; } = new List<Room>();
     }
     public class CreateHotelRequestDto
@@ -28,7 +32,7 @@ namespace viesbuciu_rezervacija_backend.Models
         public string StreetNumber { get; set; } = String.Empty;
         public bool Parking { get; set; }
         public bool Breakfast { get; set; }
-
+        public string? OwnerId { get; set; }
         public HotelType Type { get; set; }
     }
 
@@ -43,7 +47,7 @@ namespace viesbuciu_rezervacija_backend.Models
         public string StreetNumber { get; set; } = String.Empty;
         public bool Parking { get; set; }
         public bool Breakfast { get; set; }
-
+        public string? OwnerId { get; set; }
         public HotelType Type { get; set; }
     }
 

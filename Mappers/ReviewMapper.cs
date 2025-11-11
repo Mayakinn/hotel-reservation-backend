@@ -13,18 +13,22 @@ namespace viesbuciu_rezervacija_backend.Mappers
                 RoomId = review.RoomId,
                 Comment = review.Comment,
                 Rating = review.Rating,
-                CreatedAt = review.CreatedAt
+                CreatedAt = review.CreatedAt,
+                ReviewerName = review.ReviewerName,
+                UserId = review.UserId
             };
         }
 
-        public static Review ToReviewFromCreate(this CreateReviewRequestDto dto, int roomId)
+        public static Review ToReviewFromCreate(this CreateReviewRequestDto dto, int roomId, string userId, string reviewerName)
         {
             return new Review
             {
                 RoomId = roomId,
                 Comment = dto.Comment,
                 Rating = dto.Rating,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                UserId = userId,
+                ReviewerName = reviewerName
             };
         }
     }
