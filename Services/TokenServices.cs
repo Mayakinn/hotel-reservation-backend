@@ -26,12 +26,13 @@ public class TokenService
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        double expiryMinutes = double.Parse(_config["Jwt:AccessTokenExpirationMinutes"] ?? "2");
 
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddHours(2),
+            expires: DateTime.Now.AddMinutes(expiryMinutes),
             signingCredentials: creds
         );
 

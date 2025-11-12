@@ -18,17 +18,19 @@ namespace viesbuciu_rezervacija_backend.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IRefreshTokenRepository _refreshTokenRepo;
         private readonly TokenService _jwtService;
-
+        private readonly IConfiguration _config;
         public AuthController(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IRefreshTokenRepository refreshTokenRepo,
-            TokenService jwtService)
+            TokenService jwtService,
+            IConfiguration config)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _refreshTokenRepo = refreshTokenRepo;
             _jwtService = jwtService;
+            _config = config;
         }
 
         [HttpPost("login")]
@@ -103,12 +105,13 @@ namespace viesbuciu_rezervacija_backend.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
             var accessToken = _jwtService.GenerateJwtToken(user, roles);
+            double expiryMinutes = double.Parse(_config["Jwt:RefreshTokenExpirationMinutes"] ?? "2");
 
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddDays(7)
+                ExpiresAt = DateTime.UtcNow.AddHours(expiryMinutes)
             };
 
             await _refreshTokenRepo.AddAsync(refreshToken);
@@ -142,12 +145,12 @@ namespace viesbuciu_rezervacija_backend.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
             var newAccessToken = _jwtService.GenerateJwtToken(user, roles);
-
+            double expiryMinutes = double.Parse(_config["Jwt:RefreshTokenExpirationMinutes"] ?? "2");
             var newRefreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddSeconds(30)
+                ExpiresAt = DateTime.UtcNow.AddSeconds(expiryMinutes)
             };
 
             storedToken.IsRevoked = true;
