@@ -14,7 +14,7 @@ namespace viesbuciu_rezervacija_backend.Data
         public DbSet<Review> Reviews => Set<Review>();
         public DbSet<Room> Rooms => Set<Room>();
         public DbSet<RoomPicture> RoomPictures => Set<RoomPicture>();
-
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public override int SaveChanges()
         {
             var entries = ChangeTracker.Entries<BaseEntity>();
