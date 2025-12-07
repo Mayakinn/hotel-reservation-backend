@@ -49,6 +49,18 @@ namespace viesbuciu_rezervacija_backend.Controllers
             await _hotelRepo.CreateAsync(hotelModel);
             return CreatedAtAction(nameof(GetById), new { id = hotelModel.Id }, hotelModel);
         }
+        [HttpGet("my-hotel")]
+        [Authorize(Roles = "HotelOwner")]
+        public async Task<IActionResult> GetMyHotel()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.OwnerId == userId);
+
+            if (hotel == null)
+                return Ok(null);
+
+            return Ok(hotel.ToHotelDto());
+        }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "HotelOwner")]
