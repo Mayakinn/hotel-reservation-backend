@@ -16,6 +16,21 @@ var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
 var dbName = Environment.GetEnvironmentVariable("DB_NAME");
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:3000",
+                "https://viesbuciu-rezervacija-frontend-yxje.vercel.app"
+
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 
 // Add services to the container.
@@ -67,6 +82,7 @@ builder.Services.AddAuthentication(options =>
 
 
 var app = builder.Build();
+app.UseCors("AllowFrontend");
 
 using (var scope = app.Services.CreateScope())
 {

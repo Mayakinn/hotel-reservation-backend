@@ -181,3 +181,6 @@
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Microsoft.Extensions.Identity.Stores.dll
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/System.Formats.Asn1.dll
 /home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/System.Text.Json.dll
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Azure.Storage.Blobs.dll
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/Azure.Storage.Common.dll
+/home/maja/viesbuciu_rezervacija_backend/viesbuciu_rezervacija_backend/bin/Debug/net9.0/System.IO.Hashing.dll
