@@ -30,10 +30,11 @@ public class BlobService
         return blob.Uri.ToString();
     }
 
-    public async Task DeleteAsync(string url)
+    public async Task DeleteAsync(string imageUrl)
     {
-        string blobName = url.Split(".net/")[1];
-        var blob = _container.GetBlobClient(blobName);
-        await blob.DeleteIfExistsAsync();
+        var blobUri = new BlobUriBuilder(new Uri(imageUrl));
+        string blobName = blobUri.BlobName;
+
+        await _container.DeleteBlobIfExistsAsync(blobName);
     }
 }

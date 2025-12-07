@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using viesbuciu_rezervacija_backend.Data;
 using viesbuciu_rezervacija_backend.Interfaces;
 using viesbuciu_rezervacija_backend.Mappers;
 using viesbuciu_rezervacija_backend.Models;
@@ -13,11 +14,21 @@ namespace viesbuciu_rezervacija_backend.Controllers
         private readonly IRoomRepository _roomRepo;
         private readonly IHotelRepository _hotelRepo;
 
-        public RoomController(IRoomRepository roomRepo, IHotelRepository hotelRepo)
+        private readonly HotelDbContext _context;
+        private readonly BlobService _blobService;
+
+        public RoomController(
+            IRoomRepository roomRepo,
+            IHotelRepository hotelRepo,
+            HotelDbContext context,
+            BlobService blobService)
         {
             _roomRepo = roomRepo;
             _hotelRepo = hotelRepo;
+            _context = context;
+            _blobService = blobService;
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllForHotel([FromRoute] int hotelId)
@@ -44,6 +55,25 @@ namespace viesbuciu_rezervacija_backend.Controllers
             var dto = room.ToRoomDetailedDto(includeReviews, includePictures);
 
             return Ok(dto);
+        }
+        [Authorize(Roles = "HotelOwner")]
+        [HttpDelete("{roomId}/pictures/{pictureId}")]
+        public async Task<IActionResult> DeleteRoomImage(int roomId, int pictureId)
+        {
+            var room = await _roomRepo.GetByIdAsync(roomId, includePictures: true);
+            if (room == null)
+                return NotFound("Room not found");
+
+            var picture = room.Pictures.FirstOrDefault(p => p.Id == pictureId);
+            if (picture == null)
+                return NotFound("Picture not found");
+
+            _context.RoomPictures.Remove(picture);
+            await _context.SaveChangesAsync();
+
+            await _blobService.DeleteAsync(picture.Url);
+
+            return NoContent();
         }
 
 
