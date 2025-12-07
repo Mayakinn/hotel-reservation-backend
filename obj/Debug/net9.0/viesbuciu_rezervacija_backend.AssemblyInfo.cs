@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("viesbuciu_rezervacija_backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4446db9eb1c3f1c7d606d15fb187383030eb080e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ea3de40ca48e2d3220c82c499391a9e69a378d8")]
 [assembly: System.Reflection.AssemblyProductAttribute("viesbuciu_rezervacija_backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("viesbuciu_rezervacija_backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
