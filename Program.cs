@@ -87,12 +87,14 @@ app.UseCors("AllowFrontend");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     await RoleSeeder.SeedRolesAsync(roleManager);
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     await AdminSeeder.SeedAdminAsync(userManager, roleManager);
 }
+
 
 
 // Configure the HTTP request pipeline.

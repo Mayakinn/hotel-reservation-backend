@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using viesbuciu_rezervacija_backend.Models;
 
 public static class AdminSeeder
 {
-    public static async Task SeedAdminAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public static async Task SeedAdminAsync(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         string adminEmail = "admin@example.com";
         string adminPassword = "Admin123!";
@@ -16,7 +19,7 @@ public static class AdminSeeder
         var admin = await userManager.FindByEmailAsync(adminEmail);
         if (admin == null)
         {
-            admin = new IdentityUser
+            admin = new ApplicationUser
             {
                 UserName = adminEmail,
                 Email = adminEmail,
@@ -32,3 +35,4 @@ public static class AdminSeeder
         }
     }
 }
+
