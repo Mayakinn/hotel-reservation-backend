@@ -23,7 +23,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins(
                 "http://localhost:3000",
-                "https://viesbuciu-rezervacija-frontend-yxje.vercel.app"
+                "https://viesbuciu-rezervacija-frontend-yxje.vercel.app",
+                "https://hotel-reservation-dkbtatahhxdwe7cw.polandcentral-01.azurewebsites.net"
 
             )
             .AllowAnyHeader()
