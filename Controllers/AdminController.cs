@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +19,26 @@ namespace viesbuciu_rezervacija_backend.Controllers
         }
 
         [HttpGet("users")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = _userManager.Users.Select(u => new
-            {
-                u.Id,
-                u.Email,
-                u.UserName
-            });
+            var users = await _userManager.Users.ToListAsync();
 
-            return Ok(users);
+            var result = new List<object>();
+
+            foreach (var u in users)
+            {
+                var roles = await _userManager.GetRolesAsync(u);
+
+                result.Add(new
+                {
+                    u.Id,
+                    u.Email,
+                    u.UserName,
+                    Roles = roles // <-- add this
+                });
+            }
+
+            return Ok(result);
         }
 
         [HttpPost("promote-to-hotelowner/{userId}")]
