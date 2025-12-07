@@ -10,5 +10,8 @@ namespace viesbuciu_rezervacija_backend.Interfaces
         Task<Room?> UpdateAsync(Room room);
         Task<Room?> DeleteAsync(int id);
         Task<List<Room>> GetAllByHotelAsync(int id);
+
+        Task SaveAsync();
+
     }
 }

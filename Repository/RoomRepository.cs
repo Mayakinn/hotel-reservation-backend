@@ -70,6 +70,10 @@ namespace viesbuciu_rezervacija_backend.Repository
             await _context.SaveChangesAsync();
             return room;
         }
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

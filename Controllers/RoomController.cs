@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using viesbuciu_rezervacija_backend.Interfaces;
 using viesbuciu_rezervacija_backend.Mappers;
@@ -96,6 +97,36 @@ namespace viesbuciu_rezervacija_backend.Controllers
             await _roomRepo.DeleteAsync(roomId);
             return NoContent();
         }
+
+        [Authorize(Roles = "HotelOwner")]
+        [HttpPost("{roomId}/upload-image")]
+        public async Task<IActionResult> UploadRoomImage(
+            int roomId,
+            IFormFile imageFile,
+            [FromServices] BlobService blobService)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+                return BadRequest("No file uploaded");
+
+            var room = await _roomRepo.GetByIdAsync(roomId, includePictures: true);
+            if (room == null)
+                return NotFound("Room not found");
+
+            var imageUrl = await blobService.UploadAsync(imageFile, $"rooms/{roomId}");
+            room.Pictures.Add(new RoomPicture
+            {
+                Url = imageUrl,
+                RoomId = roomId,
+                Room = room
+            });
+
+
+            await _roomRepo.SaveAsync();
+
+            return Ok(new { url = imageUrl });
+        }
+
+
 
     }
 
