@@ -184,7 +184,13 @@ namespace viesbuciu_rezervacija_backend.Controllers
                     await _refreshTokenRepo.SaveChangesAsync();
                 }
 
-                Response.Cookies.Delete("refreshToken");
+                Response.Cookies.Delete("refreshToken", new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Path = "/"
+                });
             }
 
             return Ok("Logged out successfully");
