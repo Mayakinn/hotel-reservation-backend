@@ -21,6 +21,7 @@ namespace viesbuciu_rezervacija_backend.Mappers
                 Type = hotel.Type,
                 Rooms = hotel.Rooms.Select(r => r.ToRoomDto()).ToList(),
                 CreatedAt = hotel.CreatedAt,
+                OwnerId = hotel.OwnerId,
             };
         }
 
