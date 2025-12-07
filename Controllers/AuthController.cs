@@ -150,7 +150,7 @@ namespace viesbuciu_rezervacija_backend.Controllers
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 UserId = user.Id,
-                ExpiresAt = DateTime.UtcNow.AddSeconds(expiryMinutes)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(expiryMinutes)
             };
 
             storedToken.IsRevoked = true;
